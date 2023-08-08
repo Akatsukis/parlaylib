@@ -41,7 +41,7 @@ long minimum_edit_distance(const Seq& s1, const Seq& s2) {
       for (int i=0; i < n; i++) {
         prev = ((s1[i] == s2[j])
                 ? diag
-                : 1 + std::min({diag, row[i], prev});
+                : 1 + std::min({diag, row[i], prev}));
         diag = row[i];
         row[i] = prev;
       }
