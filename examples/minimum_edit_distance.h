@@ -41,7 +41,7 @@ long minimum_edit_distance(const Seq& s1, const Seq& s2) {
       for (int i=0; i < n; i++) {
         prev = ((s1[i] == s2[j])
                 ? diag
-                : 1 + std::min(row[i], prev));
+                : 1 + std::min({diag, row[i], prev});
         diag = row[i];
         row[i] = prev;
       }
@@ -58,7 +58,7 @@ long minimum_edit_distance(const Seq& s1, const Seq& s2) {
     parlay::parallel_for(start, end, [&] (long j) {
       auto i = k - j;
       int io = i*bsize; int jo = j*bsize;
-      if (j < end-1) db[j] = c[jo + bsize - 1];
+      if (jo + bsize - 1 < m) db[j] = c[jo + bsize - 1];
       do_block(ra.begin() + io, rb.begin() + io,
                s1.begin() + io, std::min(bsize, n - io),
                c.begin() + jo, c.begin() + jo,
